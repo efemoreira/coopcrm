@@ -64,18 +64,22 @@ begin
     instance_id, id, aud, role,
     email, encrypted_password,
     email_confirmed_at, created_at, updated_at,
-    raw_app_meta_data, raw_user_meta_data, is_super_admin
+    raw_app_meta_data, raw_user_meta_data, is_super_admin,
+    -- GoTrue requer strings vazias (não NULL) nestas colunas de token
+    confirmation_token, recovery_token, email_change_token_new,
+    email_change_token_current, reauthentication_token,
+    phone_change, phone_change_token
   )
   values
-    ('00000000-0000-0000-0000-000000000000', v_uid_admin,   'authenticated', 'authenticated', 'admin@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_joao,    'authenticated', 'authenticated', 'joao@cooptech.com',     crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_maria,   'authenticated', 'authenticated', 'maria@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_carlos,  'authenticated', 'authenticated', 'carlos@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_ana,     'authenticated', 'authenticated', 'ana@cooptech.com',      crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_pedro,   'authenticated', 'authenticated', 'pedro@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_lucia,   'authenticated', 'authenticated', 'lucia@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_rafael,  'authenticated', 'authenticated', 'rafael@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
-    ('00000000-0000-0000-0000-000000000000', v_uid_fernanda,'authenticated', 'authenticated', 'fernanda@cooptech.com', crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false)
+    ('00000000-0000-0000-0000-000000000000', v_uid_admin,   'authenticated', 'authenticated', 'admin@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_joao,    'authenticated', 'authenticated', 'joao@cooptech.com',     crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_maria,   'authenticated', 'authenticated', 'maria@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_carlos,  'authenticated', 'authenticated', 'carlos@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_ana,     'authenticated', 'authenticated', 'ana@cooptech.com',      crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_pedro,   'authenticated', 'authenticated', 'pedro@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_lucia,   'authenticated', 'authenticated', 'lucia@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_rafael,  'authenticated', 'authenticated', 'rafael@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', ''),
+    ('00000000-0000-0000-0000-000000000000', v_uid_fernanda,'authenticated', 'authenticated', 'fernanda@cooptech.com', crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false, '', '', '', '', '', '', '')
   on conflict (id) do nothing;
 
   -- auth.identities: obrigatório para signInWithPassword funcionar no Supabase local
