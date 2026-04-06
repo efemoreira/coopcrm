@@ -11,14 +11,40 @@ class SupabaseAuthDatasource {
   SupabaseAuthDatasource(@Named('supabase') this._client);
 
   Future<UserModel> signIn({required String email, required String password}) async {
+    // Se o input for um CPF (11 dígitos), resolve o email real pelo CPF
+    final resolvedEmail = await _resolveEmail(email);
+
     final response = await _client.auth.signInWithPassword(
-      email: email,
+      email: resolvedEmail,
       password: password,
     );
     final user = response.user;
     if (user == null) throw const AuthException('Falha ao autenticar');
     final cooperado = await _fetchCooperado(user.id);
-    return UserModel.fromSupabase(id: user.id, email: user.email ?? email, cooperadoData: cooperado);
+    return UserModel.fromSupabase(id: user.id, email: user.email ?? resolvedEmail, cooperadoData: cooperado);
+  }
+
+  /// Se o input parecer um CPF (11 dígitos numéricos), busca o email
+  /// real do cooperado na tabela `cooperados`. Caso contrário, retorna
+  /// o próprio input (já é um email).
+  Future<String> _resolveEmail(String input) async {
+    final stripped = input.replaceAll(RegExp(r'\D'), '');
+    if (stripped.length != 11) return input.trim();
+
+    try {
+      final row = await _client
+          .from('cooperados')
+          .select('email')
+          .eq('cpf', stripped)
+          .maybeSingle();
+      if (row != null && row['email'] != null) {
+        return row['email'] as String;
+      }
+    } catch (_) {}
+
+    // CPF não encontrado — retorna um email inválido propositalmente
+    // para que o Supabase retorne 400 (credenciais inválidas) ao invés de 500.
+    return '$stripped@cpf.nao.encontrado';
   }
 
   Future<void> signOut() async {
@@ -37,7 +63,6 @@ class SupabaseAuthDatasource {
   }
 
   /// Busca os dados do cooperado vinculado ao [userId] do Supabase Auth.
-  /// Retorna `null` se o usuário não tiver registro na tabela `cooperados`.
   Future<Map<String, dynamic>?> _fetchCooperado(String userId) async {
     try {
       final response = await _client

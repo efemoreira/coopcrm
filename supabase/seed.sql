@@ -60,17 +60,22 @@ begin
   -- ===========================================================
   -- 1. AUTH USERS (bypass RLS para seed local)
   -- ===========================================================
-  insert into auth.users (id, email, encrypted_password, email_confirmed_at, role)
+  insert into auth.users (
+    instance_id, id, aud, role,
+    email, encrypted_password,
+    email_confirmed_at, created_at, updated_at,
+    raw_app_meta_data, raw_user_meta_data, is_super_admin
+  )
   values
-    (v_uid_admin,   'admin@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_joao,    'joao@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_maria,   'maria@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_carlos,  'carlos@cooptech.com',  crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_ana,     'ana@cooptech.com',     crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_pedro,   'pedro@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_lucia,   'lucia@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_rafael,  'rafael@cooptech.com',  crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated'),
-    (v_uid_fernanda,'fernanda@cooptech.com',crypt('CoopCRM@2026', gen_salt('bf')), now(), 'authenticated')
+    ('00000000-0000-0000-0000-000000000000', v_uid_admin,   'authenticated', 'authenticated', 'admin@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_joao,    'authenticated', 'authenticated', 'joao@cooptech.com',     crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_maria,   'authenticated', 'authenticated', 'maria@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_carlos,  'authenticated', 'authenticated', 'carlos@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_ana,     'authenticated', 'authenticated', 'ana@cooptech.com',      crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_pedro,   'authenticated', 'authenticated', 'pedro@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_lucia,   'authenticated', 'authenticated', 'lucia@cooptech.com',    crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_rafael,  'authenticated', 'authenticated', 'rafael@cooptech.com',   crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false),
+    ('00000000-0000-0000-0000-000000000000', v_uid_fernanda,'authenticated', 'authenticated', 'fernanda@cooptech.com', crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false)
   on conflict (id) do nothing;
 
   -- ===========================================================
@@ -93,15 +98,15 @@ begin
   insert into cooperados (id, cooperative_id, user_id, nome, cpf, email, telefone,
                           status, num_cota, especialidades, data_admissao, is_admin)
   values
-    (v_coop_admin,   v_coop_id, v_uid_admin,   'Ana Paula Souza',    '111.111.111-11', 'admin@cooptech.com',    '(11) 91111-1111', 'ativo',        1,  '{"gestão","RH"}',                          '2023-01-15', true),
-    (v_coop_joao,    v_coop_id, v_uid_joao,    'João Carlos Lima',   '222.222.222-22', 'joao@cooptech.com',     '(11) 92222-2222', 'ativo',        2,  '{"desenvolvimento","backend","Python"}',    '2023-03-10', false),
-    (v_coop_maria,   v_coop_id, v_uid_maria,   'Maria Oliveira',     '333.333.333-33', 'maria@cooptech.com',    '(11) 93333-3333', 'ativo',        3,  '{"design","UI/UX","Figma"}',               '2023-04-01', false),
-    (v_coop_carlos,  v_coop_id, v_uid_carlos,  'Carlos Eduardo',     '444.444.444-44', 'carlos@cooptech.com',   '(11) 94444-4444', 'inadimplente', 4,  '{"infraestrutura","DevOps","Docker"}',      '2023-05-20', false),
-    (v_coop_ana,     v_coop_id, v_uid_ana,     'Ana Beatriz Costa',  '555.555.555-55', 'ana@cooptech.com',      '(11) 95555-5555', 'ativo',        5,  '{"frontend","React","Flutter"}',           '2023-06-12', false),
-    (v_coop_pedro,   v_coop_id, v_uid_pedro,   'Pedro Henrique',     '666.666.666-66', 'pedro@cooptech.com',    '(11) 96666-6666', 'ativo',        6,  '{"dados","Power BI","SQL"}',               '2023-07-08', false),
-    (v_coop_lucia,   v_coop_id, v_uid_lucia,   'Lúcia Ferreira',     '777.777.777-77', 'lucia@cooptech.com',    '(11) 97777-7777', 'suspenso',     7,  '{"comercial","vendas"}',                   '2023-08-30', false),
-    (v_coop_rafael,  v_coop_id, v_uid_rafael,  'Rafael Mendes',      '888.888.888-88', 'rafael@cooptech.com',   '(11) 98888-8888', 'ativo',        8,  '{"mobile","Android","Flutter","iOS"}',     '2023-09-15', false),
-    (v_coop_fernanda,v_coop_id, v_uid_fernanda,'Fernanda Torres',    '999.999.999-99', 'fernanda@cooptech.com', '(11) 99999-9999', 'ativo',        9,  '{"QA","testes","automação","Cypress"}',    '2024-01-10', false)
+    (v_coop_admin,   v_coop_id, v_uid_admin,   'Ana Paula Souza',    '11111111111', 'admin@cooptech.com',    '(11) 91111-1111', 'ativo',        1,  '{"gestão","RH"}',                          '2023-01-15', true),
+    (v_coop_joao,    v_coop_id, v_uid_joao,    'João Carlos Lima',   '22222222222', 'joao@cooptech.com',     '(11) 92222-2222', 'ativo',        2,  '{"desenvolvimento","backend","Python"}',    '2023-03-10', false),
+    (v_coop_maria,   v_coop_id, v_uid_maria,   'Maria Oliveira',     '33333333333', 'maria@cooptech.com',    '(11) 93333-3333', 'ativo',        3,  '{"design","UI/UX","Figma"}',               '2023-04-01', false),
+    (v_coop_carlos,  v_coop_id, v_uid_carlos,  'Carlos Eduardo',     '44444444444', 'carlos@cooptech.com',   '(11) 94444-4444', 'inadimplente', 4,  '{"infraestrutura","DevOps","Docker"}',      '2023-05-20', false),
+    (v_coop_ana,     v_coop_id, v_uid_ana,     'Ana Beatriz Costa',  '55555555555', 'ana@cooptech.com',      '(11) 95555-5555', 'ativo',        5,  '{"frontend","React","Flutter"}',           '2023-06-12', false),
+    (v_coop_pedro,   v_coop_id, v_uid_pedro,   'Pedro Henrique',     '66666666666', 'pedro@cooptech.com',    '(11) 96666-6666', 'ativo',        6,  '{"dados","Power BI","SQL"}',               '2023-07-08', false),
+    (v_coop_lucia,   v_coop_id, v_uid_lucia,   'Lúcia Ferreira',     '77777777777', 'lucia@cooptech.com',    '(11) 97777-7777', 'suspenso',     7,  '{"comercial","vendas"}',                   '2023-08-30', false),
+    (v_coop_rafael,  v_coop_id, v_uid_rafael,  'Rafael Mendes',      '88888888888', 'rafael@cooptech.com',   '(11) 98888-8888', 'ativo',        8,  '{"mobile","Android","Flutter","iOS"}',     '2023-09-15', false),
+    (v_coop_fernanda,v_coop_id, v_uid_fernanda,'Fernanda Torres',    '99999999999', 'fernanda@cooptech.com', '(11) 99999-9999', 'ativo',        9,  '{"QA","testes","automação","Cypress"}',    '2024-01-10', false)
   on conflict (id) do nothing;
 
   -- ===========================================================

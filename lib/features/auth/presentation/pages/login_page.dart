@@ -38,23 +38,10 @@ class _LoginViewState extends State<_LoginView> {
     super.dispose();
   }
 
-  /// Determina se o campo é CPF (só dígitos, 11 chars) e converte para email@cpf
-  /// Supabase não tem login por CPF nativamente — usamos email fictício derivado do CPF
-  /// OU podemos buscar o email pelo CPF antes; usamos a abordagem simples de email com cpf.
-  String _resolveLogin(String input) {
-    final stripped = input.replaceAll(RegExp(r'\D'), '');
-    if (stripped.length == 11) {
-      // CPF → email derivado: cpf@coopcrm.local (padrão de cadastro)
-      return '$stripped@coopcrm.local';
-    }
-    return input.trim();
-  }
-
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    final email = _resolveLogin(_loginCtrl.text.trim());
     context.read<AuthBloc>().add(AuthSignInRequested(
-      email: email,
+      email: _loginCtrl.text.trim(),
       password: _passwordCtrl.text,
     ));
   }
