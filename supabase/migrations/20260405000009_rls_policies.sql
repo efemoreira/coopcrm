@@ -1,15 +1,19 @@
 -- Migration: Políticas RLS para acesso seguro por tenant
 
 -- Helper: retorna o cooperative_id do cooperado logado
+-- SECURITY DEFINER: bypassa RLS ao consultar cooperados (evita recursão infinita)
 create or replace function current_cooperative_id()
-returns uuid language sql stable as $$
+returns uuid language sql stable security definer
+set search_path = public as $$
   select cooperative_id from cooperados
   where user_id = auth.uid() limit 1;
 $$;
 
 -- Helper: verifica se o cooperado logado é admin
+-- SECURITY DEFINER: bypassa RLS ao consultar cooperados (evita recursão infinita)
 create or replace function is_admin()
-returns boolean language sql stable as $$
+returns boolean language sql stable security definer
+set search_path = public as $$
   select coalesce((
     select is_admin from cooperados
     where user_id = auth.uid() limit 1

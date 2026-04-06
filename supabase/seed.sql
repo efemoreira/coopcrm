@@ -78,8 +78,20 @@ begin
     ('00000000-0000-0000-0000-000000000000', v_uid_fernanda,'authenticated', 'authenticated', 'fernanda@cooptech.com', crypt('CoopCRM@2026', gen_salt('bf')), now(), now(), now(), '{"provider":"email","providers":["email"]}', '{}', false)
   on conflict (id) do nothing;
 
-  -- ===========================================================
-  -- 2. COOPERATIVA
+  -- auth.identities: obrigatório para signInWithPassword funcionar no Supabase local
+  insert into auth.identities (id, user_id, provider_id, provider, identity_data,
+                                last_sign_in_at, created_at, updated_at)
+  values
+    (gen_random_uuid(), v_uid_admin,    'admin@cooptech.com',    'email', jsonb_build_object('sub', v_uid_admin::text,    'email', 'admin@cooptech.com'),    now(), now(), now()),
+    (gen_random_uuid(), v_uid_joao,     'joao@cooptech.com',     'email', jsonb_build_object('sub', v_uid_joao::text,     'email', 'joao@cooptech.com'),     now(), now(), now()),
+    (gen_random_uuid(), v_uid_maria,    'maria@cooptech.com',    'email', jsonb_build_object('sub', v_uid_maria::text,    'email', 'maria@cooptech.com'),    now(), now(), now()),
+    (gen_random_uuid(), v_uid_carlos,   'carlos@cooptech.com',   'email', jsonb_build_object('sub', v_uid_carlos::text,   'email', 'carlos@cooptech.com'),   now(), now(), now()),
+    (gen_random_uuid(), v_uid_ana,      'ana@cooptech.com',      'email', jsonb_build_object('sub', v_uid_ana::text,      'email', 'ana@cooptech.com'),      now(), now(), now()),
+    (gen_random_uuid(), v_uid_pedro,    'pedro@cooptech.com',    'email', jsonb_build_object('sub', v_uid_pedro::text,    'email', 'pedro@cooptech.com'),    now(), now(), now()),
+    (gen_random_uuid(), v_uid_lucia,    'lucia@cooptech.com',    'email', jsonb_build_object('sub', v_uid_lucia::text,    'email', 'lucia@cooptech.com'),    now(), now(), now()),
+    (gen_random_uuid(), v_uid_rafael,   'rafael@cooptech.com',   'email', jsonb_build_object('sub', v_uid_rafael::text,   'email', 'rafael@cooptech.com'),   now(), now(), now()),
+    (gen_random_uuid(), v_uid_fernanda, 'fernanda@cooptech.com', 'email', jsonb_build_object('sub', v_uid_fernanda::text, 'email', 'fernanda@cooptech.com'), now(), now(), now())
+  on conflict (provider, provider_id) do nothing;
   -- ===========================================================
   insert into cooperativas (id, nome, cnpj, plano, status, settings)
   values (

@@ -44,9 +44,9 @@ class SupabaseAuthDatasource {
     }
   }
 
-  /// Se o input parecer um CPF (11 dígitos numéricos), busca o email
-  /// real do cooperado na tabela `cooperados`. Caso contrário, retorna
-  /// o próprio input (já é um email).
+  /// Se o input parecer um CPF (11 dígitos numéricos, com ou sem máscara),
+  /// chama a RPC `get_email_by_cpf` (SECURITY DEFINER, bypassa RLS)
+  /// para obter o email real antes do signInWithPassword.
   Future<String> _resolveEmail(String input) async {
     final stripped = input.replaceAll(RegExp(r'\D'), '');
     debugPrint('[AuthDS] ── _resolveEmail: input="$input" stripped="$stripped" isCpf=${stripped.length == 11}');
@@ -54,18 +54,17 @@ class SupabaseAuthDatasource {
     if (stripped.length != 11) return input.trim();
 
     try {
-      debugPrint('[AuthDS] ── buscando cooperado pelo CPF: $stripped');
-      final row = await _client
-          .from('cooperados')
-          .select('email')
-          .eq('cpf', stripped)
-          .maybeSingle();
-      debugPrint('[AuthDS] ── resultado da busca por CPF: $row');
-      if (row != null && row['email'] != null) {
-        return row['email'] as String;
+      debugPrint('[AuthDS] ── chamando RPC get_email_by_cpf("$stripped")');
+      final result = await _client.rpc(
+        'get_email_by_cpf',
+        params: {'p_cpf': stripped},
+      );
+      debugPrint('[AuthDS] ── resultado RPC: $result');
+      if (result != null && result is String && result.isNotEmpty) {
+        return result;
       }
     } catch (e) {
-      debugPrint('[AuthDS] ✗ Erro ao buscar CPF: $e');
+      debugPrint('[AuthDS] ✗ Erro ao chamar RPC get_email_by_cpf: $e');
     }
 
     debugPrint('[AuthDS] ✗ CPF não encontrado na tabela cooperados');
