@@ -12,7 +12,7 @@ class SupabaseCotasDatasource {
   Future<List<CotaModel>> getByCooperado(String cooperadoId) async {
     final data = await _client
         .from('cotas_pagamentos')
-        .select()
+        .select('*, cooperado:cooperados(nome)')
         .eq('cooperado_id', cooperadoId)
         .order('competencia', ascending: false);
     return data.map(CotaModel.fromJson).toList();
@@ -21,8 +21,8 @@ class SupabaseCotasDatasource {
   Future<List<CotaModel>> getByCooperativa(String cooperativaId) async {
     final data = await _client
         .from('cotas_pagamentos')
-        .select()
-        .eq('cooperativa_id', cooperativaId)
+        .select('*, cooperado:cooperados(nome)')
+        .eq('cooperative_id', cooperativaId)
         .order('cooperado_id')
         .order('competencia', ascending: false);
     return data.map(CotaModel.fromJson).toList();

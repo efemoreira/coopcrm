@@ -36,7 +36,7 @@ class CotasRepositoryImpl implements CotasRepository {
     try {
       final model = await _ds.lancarPagamento({
         'cooperado_id': params.cooperadoId,
-        'cooperativa_id': params.cooperativaId,
+        'cooperative_id': params.cooperativaId,
         'competencia': params.competencia,
         'valor_devido': params.valorDevido,
         if (params.valorPago != null) 'valor_pago': params.valorPago,

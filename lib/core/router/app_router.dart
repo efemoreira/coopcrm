@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
@@ -110,11 +112,10 @@ class AppRouter {
 }
 
 class _GoRouterRefreshStream extends ChangeNotifier {
-  final dynamic _subscription;
-  _GoRouterRefreshStream(Stream stream)
-      : _subscription = stream.asBroadcastStream().listen((_) {}) {
-    notifyListeners();
-    (_subscription as dynamic).onData((_) => notifyListeners());
+  late final StreamSubscription<dynamic> _subscription;
+
+  _GoRouterRefreshStream(Stream<dynamic> stream) {
+    _subscription = stream.listen((_) => notifyListeners());
   }
 
   @override

@@ -78,6 +78,7 @@ class _ComunicadosView extends StatelessWidget {
               }
               return ListView.builder(
                 itemCount: state.items.length,
+                padding: const EdgeInsets.only(bottom: 88),
                 itemBuilder: (context, i) {
                   final c = state.items[i];
                   return Card(

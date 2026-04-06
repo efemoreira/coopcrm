@@ -110,7 +110,15 @@ class _OportunidadeDetailViewState extends State<_OportunidadeDetailView> {
       builder: (context, state) {
         final isLoading = state is OportunidadeDetailLoading;
         return Scaffold(
-          appBar: AppBar(title: const Text('Detalhes')),
+          appBar: AppBar(
+            title: Text(
+              state is OportunidadeDetailLoaded
+                  ? state.oportunidade.titulo
+                  : 'Detalhes',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           body: switch (state) {
             OportunidadeDetailLoading() => const Center(child: CircularProgressIndicator()),
             OportunidadeDetailError(:final message) => ErrorDisplay(

@@ -19,12 +19,20 @@ class SupabaseCooperadosDatasource {
   }
 
   Future<CooperadoModel> criar(Map<String, dynamic> data) async {
-    final result = await _client
-        .from('cooperados')
-        .insert(data)
-        .select()
-        .single();
-    return CooperadoModel.fromJson(result);
+    // Chama a Edge Function `criar-cooperado` que cria o auth user + cooperado
+    // via service_role, garantindo integridade e rollback automático.
+    final response = await _client.functions.invoke(
+      'criar-cooperado',
+      body: data,
+    );
+
+    if (response.status != 201) {
+      final msg = (response.data as Map<String, dynamic>?)?['error'] ?? 'Erro ao criar cooperado';
+      throw Exception(msg);
+    }
+
+    final cooperado = (response.data as Map<String, dynamic>)['cooperado'] as Map<String, dynamic>;
+    return CooperadoModel.fromJson(cooperado);
   }
 
   Future<void> updateStatus({required String cooperadoId, required String status}) async {

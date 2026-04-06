@@ -39,7 +39,7 @@ class SupabaseComunicadosDatasource {
     await _client.from('comunicado_leituras').upsert({
       'comunicado_id': comunicadoId,
       'cooperado_id': cooperadoId,
-    });
+    }, ignoreDuplicates: true);
   }
 
   Future<ComunicadoModel> criar(Map<String, dynamic> data) async {

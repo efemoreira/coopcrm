@@ -155,6 +155,7 @@ class _CooperadosViewState extends State<_CooperadosView> {
           Expanded(
             child: ListView.builder(
               itemCount: filtered.length,
+              padding: const EdgeInsets.only(bottom: 88),
               itemBuilder: (context, i) {
                 final c = filtered[i];
                 final statusColor = _statusColor(c.status);

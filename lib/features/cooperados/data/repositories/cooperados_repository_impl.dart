@@ -25,16 +25,15 @@ class CooperadosRepositoryImpl implements CooperadosRepository {
   Future<Either<Failure, CooperadoEntity>> criar(CriarCooperadoParams params) async {
     try {
       final model = await _ds.criar({
-        'cooperative_id': params.cooperativeId,
+        'cooperativeId': params.cooperativeId,
         'nome': params.nome,
         'cpf': params.cpf,
         'email': params.email,
         if (params.telefone != null) 'telefone': params.telefone,
         'especialidades': params.especialidades,
         if (params.dataAdmissao != null)
-          'data_admissao': params.dataAdmissao!.toIso8601String(),
-        'status': 'ativo',
-        'num_cota': 1,
+          'dataAdmissao': params.dataAdmissao!.toIso8601String(),
+        if (params.password != null) 'password': params.password,
       });
       return Right(model.toEntity());
     } catch (e) {

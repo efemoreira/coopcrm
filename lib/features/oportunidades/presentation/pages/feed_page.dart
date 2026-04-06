@@ -105,6 +105,7 @@ class _FeedView extends StatelessWidget {
                           Expanded(
                             child: ListView.builder(
                         // RNF: +1 para o botão "Carregar mais" quando hasMore
+                        padding: const EdgeInsets.only(bottom: 88),
                         itemCount: filtered.length + (hasMore ? 1 : 0),
                         itemBuilder: (context, i) {
                           // Botão de carregar mais no final da lista

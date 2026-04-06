@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 class CotaEntity extends Equatable {
   final String id;
   final String cooperadoId;
+  final String? cooperadoNome;
   final String cooperativaId;
   final String competencia;
   final double valorDevido;
@@ -18,6 +19,7 @@ class CotaEntity extends Equatable {
   const CotaEntity({
     required this.id,
     required this.cooperadoId,
+    this.cooperadoNome,
     required this.cooperativaId,
     required this.competencia,
     required this.valorDevido,
@@ -32,5 +34,5 @@ class CotaEntity extends Equatable {
   bool get isEmAtraso => status == 'em_atraso';
 
   @override
-  List<Object?> get props => [id, status, competencia];
+  List<Object?> get props => [id, status, competencia, cooperadoNome];
 }

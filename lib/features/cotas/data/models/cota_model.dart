@@ -5,6 +5,7 @@ import '../../domain/entities/cota_entity.dart';
 class CotaModel {
   final String id;
   final String cooperadoId;
+  final String? cooperadoNome;
   final String cooperativaId;
   final String competencia;
   final double valorDevido;
@@ -17,6 +18,7 @@ class CotaModel {
   const CotaModel({
     required this.id,
     required this.cooperadoId,
+    this.cooperadoNome,
     required this.cooperativaId,
     required this.competencia,
     required this.valorDevido,
@@ -28,9 +30,11 @@ class CotaModel {
   });
 
   factory CotaModel.fromJson(Map<String, dynamic> json) {
+    final cooperadoMap = json['cooperado'] as Map<String, dynamic>?;
     return CotaModel(
       id: json['id'] as String,
       cooperadoId: json['cooperado_id'] as String,
+      cooperadoNome: cooperadoMap?['nome'] as String?,
       cooperativaId: json['cooperative_id'] as String,
       competencia: json['competencia'] as String,
       valorDevido: (json['valor_devido'] as num).toDouble(),
@@ -47,6 +51,7 @@ class CotaModel {
   CotaEntity toEntity() => CotaEntity(
     id: id,
     cooperadoId: cooperadoId,
+    cooperadoNome: cooperadoNome,
     cooperativaId: cooperativaId,
     competencia: competencia,
     valorDevido: valorDevido,

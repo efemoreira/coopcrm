@@ -23,6 +23,7 @@ class CriarCooperadoParams {
   final String nome;
   final String cpf;
   final String email;
+  final String? password;
   final String? telefone;
   final List<String> especialidades;
   final DateTime? dataAdmissao;
@@ -32,6 +33,7 @@ class CriarCooperadoParams {
     required this.nome,
     required this.cpf,
     required this.email,
+    this.password,
     this.telefone,
     this.especialidades = const [],
     this.dataAdmissao,

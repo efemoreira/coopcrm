@@ -120,7 +120,7 @@ class _CriarComunicadoPageState extends State<CriarComunicadoPage> {
                   value: _pinned,
                   onChanged: (v) => setState(() => _pinned = v),
                   title: const Text('Fixar no topo'),
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   contentPadding: EdgeInsets.zero,
                 ),
                 const SizedBox(height: 12),
@@ -144,7 +144,6 @@ class _CriarComunicadoPageState extends State<CriarComunicadoPage> {
                   title: const Text('Todos os cooperados ativos'),
                   value: 'todos',
                   groupValue: _destinatarios,
-                  activeColor: AppColors.primary,
                   onChanged: (v) => setState(() {
                     _destinatarios = v!;
                     _selectedCooperadoIds = [];
@@ -155,7 +154,6 @@ class _CriarComunicadoPageState extends State<CriarComunicadoPage> {
                   title: const Text('Selecionar cooperados específicos'),
                   value: 'especificos',
                   groupValue: _destinatarios,
-                  activeColor: AppColors.primary,
                   onChanged: (v) => setState(() => _destinatarios = v!),
                 ),
                 if (_destinatarios == 'especificos') ...[

@@ -19,6 +19,7 @@ class _CriarCooperadoPageState extends State<CriarCooperadoPage> {
   final _cpfCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _telefoneCtrl = TextEditingController();
+  final _senhaCtrl = TextEditingController();
   bool _loading = false;
 
   @override
@@ -27,6 +28,7 @@ class _CriarCooperadoPageState extends State<CriarCooperadoPage> {
     _cpfCtrl.dispose();
     _emailCtrl.dispose();
     _telefoneCtrl.dispose();
+    _senhaCtrl.dispose();
     super.dispose();
   }
 
@@ -92,6 +94,18 @@ class _CriarCooperadoPageState extends State<CriarCooperadoPage> {
                   label: 'Telefone',
                   keyboardType: TextInputType.phone,
                 ),
+                const SizedBox(height: 16),
+                AppTextField(
+                  controller: _senhaCtrl,
+                  label: 'Senha inicial (deixe em branco para gerar automático)',
+                  obscureText: true,
+                  validator: (v) {
+                    if (v != null && v.isNotEmpty && v.length < 8) {
+                      return 'Senha deve ter no mínimo 8 caracteres';
+                    }
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: _loading ? null : _submit,
@@ -128,6 +142,7 @@ class _CriarCooperadoPageState extends State<CriarCooperadoPage> {
             cpf: _cpfCtrl.text.replaceAll(RegExp(r'\D'), ''),
             email: _emailCtrl.text.trim(),
             telefone: _telefoneCtrl.text.isNotEmpty ? _telefoneCtrl.text.trim() : null,
+            password: _senhaCtrl.text.isNotEmpty ? _senhaCtrl.text : null,
           ),
         );
   }

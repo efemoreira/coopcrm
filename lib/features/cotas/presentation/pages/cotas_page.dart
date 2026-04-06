@@ -175,10 +175,11 @@ class _CotasView extends StatelessWidget {
                   else
                     Expanded(
                       child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 88),
                         children: byCooperado.entries.map((entry) {
                           final coopId = entry.key;
                           final cotas = entry.value;
+                          final coopNome = cotas.first.cooperadoNome ?? coopId;
                           final temAtraso = cotas.any((c) => c.isEmAtraso);
                           final totalDevido = cotas.where((c) => !c.isPago).fold<double>(0, (s, c) => s + c.valorDevido);
                           return Card(
@@ -189,8 +190,8 @@ class _CotasView extends StatelessWidget {
                                 child: Icon(temAtraso ? Icons.warning_amber_outlined : Icons.check_circle_outline,
                                     color: temAtraso ? AppColors.error : AppColors.statusConcluida),
                               ),
-                              title: Text(coopId, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12)),
-                              subtitle: Text('${cotas.length} lançamentos'),
+                              title: Text(coopNome, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600)),
+                              subtitle: Text('${cotas.length} lançamento${cotas.length > 1 ? "s" : ""}'),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -268,6 +269,7 @@ class _CotasView extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       itemCount: state.cotas.length,
+                      padding: const EdgeInsets.only(bottom: 16),
                       itemBuilder: (context, i) {
                         final c = state.cotas[i];
                         return ListTile(
@@ -284,11 +286,13 @@ class _CotasView extends StatelessWidget {
                                   : c.isEmAtraso ? AppColors.error : AppColors.accent,
                             ),
                           ),
-                          title: Text(c.competencia),
+                          title: Text(_formatarCompetencia(c.competencia)),
                           subtitle: Text(
                             c.isPago && c.dataPagamento != null
                                 ? 'Pago em ${AppDateUtils.formatDate(c.dataPagamento!)}'
-                                : 'Vence: ${c.competencia}',
+                                : c.isEmAtraso
+                                    ? 'Em atraso'
+                                    : 'Pendente',
                           ),
                           trailing: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -332,4 +336,14 @@ class _CotasView extends StatelessWidget {
       },
     );
   }
+}
+
+/// Formata competência YYYY-MM → "Abr/2026"
+String _formatarCompetencia(String competencia) {
+  final parts = competencia.split('-');
+  if (parts.length != 2) return competencia;
+  final meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  final mes = int.tryParse(parts[1]);
+  if (mes == null || mes < 1 || mes > 12) return competencia;
+  return '${meses[mes - 1]}/${parts[0]}';
 }

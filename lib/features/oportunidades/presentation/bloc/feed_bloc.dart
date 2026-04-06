@@ -34,6 +34,11 @@ final class FeedCandidaturaAdded extends FeedEvent {
   const FeedCandidaturaAdded(this.oportunidadeId);
   @override List<Object> get props => [oportunidadeId];
 }
+final class _FeedError extends FeedEvent {
+  final String message;
+  const _FeedError(this.message);
+  @override List<Object> get props => [message];
+}
 final class FeedFilterChanged extends FeedEvent {
   final String? status;
   const FeedFilterChanged(this.status);
@@ -96,6 +101,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     on<FeedSubscribed>(_onSubscribe);
     on<FeedFilterChanged>(_onFilter);
     on<_FeedUpdated>(_onUpdated);
+    on<_FeedError>(_onFeedError);
     on<FeedLoadMore>(_onLoadMore);
     on<FeedCandidaturaAdded>(_onCandidaturaAdded);
   }
@@ -121,7 +127,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
             if (cached != null) {
               add(_FeedUpdated(cached, fromCache: true));
             } else {
-              emit(FeedError(e.toString()));
+              add(_FeedError(e.toString()));
             }
           },
         );
@@ -144,6 +150,10 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         candidataIds: _candidataIds,
       ));
     }
+  }
+
+  void _onFeedError(_FeedError event, Emitter<FeedState> emit) {
+    emit(FeedError(event.message));
   }
 
   /// RNF Offline: salva feed no SharedPreferences
