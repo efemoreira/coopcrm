@@ -78,8 +78,6 @@ supabase start
 # Apply all migrations
 supabase db push
 
-# Seed dev data
-supabase db seed
 ```
 
 This creates tables, RLS policies, Edge Functions and seed data locally.
@@ -88,8 +86,10 @@ Local Supabase URLs will be printed — update your `.env`:
 
 ```env
 SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_ANON_KEY=<printed_anon_key>
+SUPABASE_ANON_KEY=<Publishable key printed by supabase start>
 ```
+
+> **Note (CLI v2.84+):** The output now shows **Publishable** (formerly "anon key") and **Secret** (formerly "service_role key"). Use the **Publishable** value for `SUPABASE_ANON_KEY`.
 
 ---
 

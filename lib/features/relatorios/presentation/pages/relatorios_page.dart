@@ -237,7 +237,7 @@ class _RelatoriosViewState extends State<_RelatoriosView> {
                     _periodo = p.$1;
                     _load();
                   }),
-                  selectedColor: AppColors.primary.withOpacity(0.15),
+                  selectedColor: AppColors.primary.withValues(alpha: 0.15),
                 ),
               )).toList(),
             ),
@@ -292,13 +292,13 @@ class _RelatoriosViewState extends State<_RelatoriosView> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: data.totalInadimplentes == 0
-                        ? AppColors.statusConcluida.withOpacity(0.08)
-                        : AppColors.error.withOpacity(0.08),
+                        ? AppColors.statusConcluida.withValues(alpha: 0.08)
+                        : AppColors.error.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: data.totalInadimplentes == 0
-                          ? AppColors.statusConcluida.withOpacity(0.3)
-                          : AppColors.error.withOpacity(0.3),
+                          ? AppColors.statusConcluida.withValues(alpha: 0.3)
+                          : AppColors.error.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Row(
@@ -344,7 +344,7 @@ class _RelatoriosViewState extends State<_RelatoriosView> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                      headingRowColor: WidgetStateProperty.all(AppColors.primary.withOpacity(0.07)),
+                      headingRowColor: WidgetStateProperty.all(AppColors.primary.withValues(alpha: 0.07)),
                       columns: const [
                         DataColumn(label: Text('Cooperado', style: TextStyle(fontWeight: FontWeight.w700))),
                         DataColumn(label: Text('Serviços', style: TextStyle(fontWeight: FontWeight.w700)), numeric: true),
@@ -391,9 +391,9 @@ class _RelatoriosViewState extends State<_RelatoriosView> {
                         trailing: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: AppColors.error.withOpacity(0.1),
+                            color: AppColors.error.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.error.withOpacity(0.3)),
+                            border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
                           ),
                           child: Text(
                             '${d.maxDiasAtraso} dia${d.maxDiasAtraso == 1 ? '' : 's'}',
@@ -435,7 +435,7 @@ class _BarChart extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2))],
       ),
       child: Column(
         children: visible.map((d) => Padding(
@@ -458,7 +458,7 @@ class _BarChart extends StatelessWidget {
                       Container(
                         height: 20,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
+                          color: AppColors.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -513,9 +513,9 @@ class _KpiCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -544,7 +544,7 @@ class _KpiRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2))],
       ),
       child: Row(
         children: [

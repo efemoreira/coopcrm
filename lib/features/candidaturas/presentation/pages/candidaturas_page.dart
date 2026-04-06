@@ -95,7 +95,7 @@ class _CandidaturasViewState extends State<_CandidaturasView> {
                   label: Text(label),
                   selected: selected,
                   onSelected: (_) => setState(() => _filtroStatus = status),
-                  selectedColor: AppColors.primary.withOpacity(0.15),
+                  selectedColor: AppColors.primary.withValues(alpha: 0.15),
                   checkmarkColor: AppColors.primary,
                   labelStyle: TextStyle(
                     color: selected ? AppColors.primary : null,
@@ -120,7 +120,7 @@ class _CandidaturasViewState extends State<_CandidaturasView> {
                   label: Text(label, style: const TextStyle(fontSize: 12)),
                   selected: selected,
                   onSelected: (_) => setState(() => _filtroPeriodo = periodo),
-                  selectedColor: AppColors.accent.withOpacity(0.15),
+                  selectedColor: AppColors.accent.withValues(alpha: 0.15),
                   checkmarkColor: AppColors.accent,
                   labelStyle: TextStyle(
                     color: selected ? AppColors.accent : null,
@@ -210,7 +210,7 @@ class _CandidaturaCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.12),
+                      color: color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(

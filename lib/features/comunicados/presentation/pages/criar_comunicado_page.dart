@@ -53,6 +53,7 @@ class _CriarComunicadoPageState extends State<CriarComunicadoPage> {
     );
     if (mounted) setState(() => _loadingCooperados = false);
   }
+  @override
   void dispose() {
     _tituloCtrl.dispose();
     _conteudoCtrl.dispose();
@@ -172,7 +173,7 @@ class _CriarComunicadoPageState extends State<CriarComunicadoPage> {
                         return FilterChip(
                           label: Text(c.nome),
                           selected: selected,
-                          selectedColor: AppColors.primary.withOpacity(0.15),
+                          selectedColor: AppColors.primary.withValues(alpha: 0.15),
                           checkmarkColor: AppColors.primary,
                           onSelected: (v) => setState(() {
                             if (v) {

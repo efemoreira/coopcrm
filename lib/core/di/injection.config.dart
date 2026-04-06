@@ -70,105 +70,76 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
     final appModule = _$AppModule();
     gh.singleton<_i454.SupabaseClient>(
       () => appModule.supabaseClient,
       instanceName: 'supabase',
     );
-    gh.factory<_i244.SupabaseAuthDatasource>(
-      () => _i244.SupabaseAuthDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i699.SupabaseComunicadosDatasource>(
-      () => _i699.SupabaseComunicadosDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i161.SupabaseCooperadosDatasource>(
-      () => _i161.SupabaseCooperadosDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i624.SupabaseCotasDatasource>(
-      () => _i624.SupabaseCotasDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i622.SupabaseNotificacoesDatasource>(
-      () => _i622.SupabaseNotificacoesDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i378.SupabaseOportunidadesDatasource>(
-      () => _i378.SupabaseOportunidadesDatasource(
-        gh<_i454.SupabaseClient>(instanceName: 'supabase'),
-      ),
-    );
-    gh.factory<_i391.NotificacoesRepository>(
-      () => _i1054.NotificacoesRepositoryImpl(
-        gh<_i622.SupabaseNotificacoesDatasource>(),
-      ),
-    );
-    gh.factory<_i1042.CooperadosRepository>(
-      () => _i953.CooperadosRepositoryImpl(
-        gh<_i161.SupabaseCooperadosDatasource>(),
-      ),
-    );
+    gh.factory<_i244.SupabaseAuthDatasource>(() => _i244.SupabaseAuthDatasource(
+        gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i699.SupabaseComunicadosDatasource>(() =>
+        _i699.SupabaseComunicadosDatasource(
+            gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i161.SupabaseCooperadosDatasource>(() =>
+        _i161.SupabaseCooperadosDatasource(
+            gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i624.SupabaseCotasDatasource>(() =>
+        _i624.SupabaseCotasDatasource(
+            gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i622.SupabaseNotificacoesDatasource>(() =>
+        _i622.SupabaseNotificacoesDatasource(
+            gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i378.SupabaseOportunidadesDatasource>(() =>
+        _i378.SupabaseOportunidadesDatasource(
+            gh<_i454.SupabaseClient>(instanceName: 'supabase')));
+    gh.factory<_i391.NotificacoesRepository>(() =>
+        _i1054.NotificacoesRepositoryImpl(
+            gh<_i622.SupabaseNotificacoesDatasource>()));
+    gh.factory<_i1042.CooperadosRepository>(() =>
+        _i953.CooperadosRepositoryImpl(
+            gh<_i161.SupabaseCooperadosDatasource>()));
     gh.factory<_i72.NotificacoesCubit>(
-      () => _i72.NotificacoesCubit(gh<_i391.NotificacoesRepository>()),
-    );
+        () => _i72.NotificacoesCubit(gh<_i391.NotificacoesRepository>()));
     gh.factory<_i27.AuthRepository>(
-      () => _i958.AuthRepositoryImpl(gh<_i244.SupabaseAuthDatasource>()),
-    );
+        () => _i958.AuthRepositoryImpl(gh<_i244.SupabaseAuthDatasource>()));
     gh.factory<_i556.SignInUseCase>(
-      () => _i556.SignInUseCase(gh<_i27.AuthRepository>()),
-    );
+        () => _i556.SignInUseCase(gh<_i27.AuthRepository>()));
     gh.factory<_i656.SignOutUseCase>(
-      () => _i656.SignOutUseCase(gh<_i27.AuthRepository>()),
-    );
-    gh.factory<_i68.OportunidadesRepository>(
-      () => _i37.OportunidadesRepositoryImpl(
-        gh<_i378.SupabaseOportunidadesDatasource>(),
-      ),
-    );
+        () => _i656.SignOutUseCase(gh<_i27.AuthRepository>()));
+    gh.factory<_i68.OportunidadesRepository>(() =>
+        _i37.OportunidadesRepositoryImpl(
+            gh<_i378.SupabaseOportunidadesDatasource>()));
     gh.factory<_i1004.CotasRepository>(
-      () => _i417.CotasRepositoryImpl(gh<_i624.SupabaseCotasDatasource>()),
-    );
-    gh.singleton<_i540.AuthBloc>(
-      () => _i540.AuthBloc(
-        gh<_i556.SignInUseCase>(),
-        gh<_i656.SignOutUseCase>(),
-        gh<_i27.AuthRepository>(),
-      ),
-    );
-    gh.factory<_i23.ComunicadosRepository>(
-      () => _i232.ComunicadosRepositoryImpl(
-        gh<_i699.SupabaseComunicadosDatasource>(),
-      ),
-    );
+        () => _i417.CotasRepositoryImpl(gh<_i624.SupabaseCotasDatasource>()));
+    gh.singleton<_i540.AuthBloc>(() => _i540.AuthBloc(
+          gh<_i556.SignInUseCase>(),
+          gh<_i656.SignOutUseCase>(),
+          gh<_i27.AuthRepository>(),
+        ));
+    gh.factory<_i23.ComunicadosRepository>(() =>
+        _i232.ComunicadosRepositoryImpl(
+            gh<_i699.SupabaseComunicadosDatasource>()));
     gh.factory<_i1056.FeedBloc>(
-      () => _i1056.FeedBloc(gh<_i68.OportunidadesRepository>()),
-    );
+        () => _i1056.FeedBloc(gh<_i68.OportunidadesRepository>()));
     gh.factory<_i94.CooperadosCubit>(
-      () => _i94.CooperadosCubit(gh<_i1042.CooperadosRepository>()),
-    );
+        () => _i94.CooperadosCubit(gh<_i1042.CooperadosRepository>()));
     gh.singleton<_i19.AppRouter>(() => _i19.AppRouter(gh<_i540.AuthBloc>()));
     gh.factory<_i126.CotasCubit>(
-      () => _i126.CotasCubit(gh<_i1004.CotasRepository>()),
-    );
+        () => _i126.CotasCubit(gh<_i1004.CotasRepository>()));
     gh.factory<_i9.OportunidadeDetailCubit>(
-      () => _i9.OportunidadeDetailCubit(gh<_i68.OportunidadesRepository>()),
-    );
+        () => _i9.OportunidadeDetailCubit(gh<_i68.OportunidadesRepository>()));
     gh.factory<_i994.ComunicadosCubit>(
-      () => _i994.ComunicadosCubit(gh<_i23.ComunicadosRepository>()),
-    );
+        () => _i994.ComunicadosCubit(gh<_i23.ComunicadosRepository>()));
     return this;
   }
 }

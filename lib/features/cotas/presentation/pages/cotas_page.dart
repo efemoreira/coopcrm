@@ -185,7 +185,7 @@ class _CotasView extends StatelessWidget {
                             margin: const EdgeInsets.only(bottom: 8),
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: temAtraso ? AppColors.error.withOpacity(0.1) : AppColors.statusConcluida.withOpacity(0.1),
+                                backgroundColor: temAtraso ? AppColors.error.withValues(alpha: 0.1) : AppColors.statusConcluida.withValues(alpha: 0.1),
                                 child: Icon(temAtraso ? Icons.warning_amber_outlined : Icons.check_circle_outline,
                                     color: temAtraso ? AppColors.error : AppColors.statusConcluida),
                               ),
@@ -273,10 +273,10 @@ class _CotasView extends StatelessWidget {
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundColor: c.isPago
-                                ? AppColors.statusConcluida.withOpacity(0.15)
+                                ? AppColors.statusConcluida.withValues(alpha: 0.15)
                                 : c.isEmAtraso
-                                    ? AppColors.error.withOpacity(0.15)
-                                    : AppColors.accent.withOpacity(0.15),
+                                    ? AppColors.error.withValues(alpha: 0.15)
+                                    : AppColors.accent.withValues(alpha: 0.15),
                             child: Icon(
                               c.isPago ? Icons.check_circle_outline : Icons.pending_outlined,
                               color: c.isPago
@@ -305,8 +305,8 @@ class _CotasView extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: c.isPago
-                                      ? AppColors.statusConcluida.withOpacity(0.1)
-                                      : AppColors.error.withOpacity(0.1),
+                                      ? AppColors.statusConcluida.withValues(alpha: 0.1)
+                                      : AppColors.error.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(

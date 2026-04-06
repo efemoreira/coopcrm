@@ -602,8 +602,8 @@ class _OportunidadeDetailViewState extends State<_OportunidadeDetailView> {
   }
 
   void _showAvaliarDialog(BuildContext context, String oportunidadeId, String cooperadoId, {String? cooperadoNome}) {
-    int _nota = 5;
-    final _comentarioCtrl = TextEditingController();
+    int nota = 5;
+    final comentarioCtrl = TextEditingController();
 
     showDialog(
       context: context,
@@ -620,9 +620,9 @@ class _OportunidadeDetailViewState extends State<_OportunidadeDetailView> {
                 children: List.generate(5, (i) {
                   final star = i + 1;
                   return IconButton(
-                    onPressed: () => setDialogState(() => _nota = star),
+                    onPressed: () => setDialogState(() => nota = star),
                     icon: Icon(
-                      star <= _nota ? Icons.star : Icons.star_border,
+                      star <= nota ? Icons.star : Icons.star_border,
                       color: const Color(0xFFF59E0B),
                       size: 36,
                     ),
@@ -631,7 +631,7 @@ class _OportunidadeDetailViewState extends State<_OportunidadeDetailView> {
               ),
               const SizedBox(height: 12),
               TextField(
-                controller: _comentarioCtrl,
+                controller: comentarioCtrl,
                 maxLines: 2,
                 maxLength: 300,
                 decoration: const InputDecoration(
@@ -652,8 +652,8 @@ class _OportunidadeDetailViewState extends State<_OportunidadeDetailView> {
                 context.read<OportunidadeDetailCubit>().avaliarCooperado(
                   oportunidadeId: oportunidadeId,
                   cooperadoId: cooperadoId,
-                  nota: _nota,
-                  comentario: _comentarioCtrl.text.isNotEmpty ? _comentarioCtrl.text : null,
+                  nota: nota,
+                  comentario: comentarioCtrl.text.isNotEmpty ? comentarioCtrl.text : null,
                 );
               },
               icon: const Icon(Icons.send_outlined),
@@ -683,7 +683,7 @@ class _StatusBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color),
       ),

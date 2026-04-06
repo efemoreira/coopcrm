@@ -137,7 +137,7 @@ class _CooperadosViewState extends State<_CooperadosView> {
                 label: Text(label, style: const TextStyle(fontSize: 12)),
                 selected: selected,
                 onSelected: (_) => setState(() => _filtroStatus = status),
-                selectedColor: AppColors.primary.withOpacity(0.12),
+                selectedColor: AppColors.primary.withValues(alpha: 0.12),
                 checkmarkColor: AppColors.primary,
               );
             },
@@ -160,7 +160,7 @@ class _CooperadosViewState extends State<_CooperadosView> {
                 final statusColor = _statusColor(c.status);
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AppColors.primary.withOpacity(0.12),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                     backgroundImage: c.fotoUrl != null ? NetworkImage(c.fotoUrl!) : null,
                     child: c.fotoUrl == null ? Text(c.nome[0].toUpperCase()) : null,
                   ),
@@ -175,7 +175,7 @@ class _CooperadosViewState extends State<_CooperadosView> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: statusColor.withOpacity(0.12),
+                                  color: statusColor.withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
@@ -218,7 +218,7 @@ class _CooperadosViewState extends State<_CooperadosView> {
                       : Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: statusColor.withOpacity(0.12),
+                            color: statusColor.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(

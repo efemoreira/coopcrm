@@ -86,7 +86,7 @@ class _ComunicadosView extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundColor: c.pinned
-                                ? AppColors.accent.withOpacity(0.15)
+                                ? AppColors.accent.withValues(alpha: 0.15)
                                 : AppColors.surface,
                             child: Icon(
                               c.pinned ? Icons.push_pin_outlined : Icons.campaign_outlined,

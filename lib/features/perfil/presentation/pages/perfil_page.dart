@@ -32,7 +32,7 @@ class PerfilPage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 52,
-                        backgroundColor: AppColors.primary.withOpacity(0.12),
+                        backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                         backgroundImage: user?.fotoUrl != null
                             ? NetworkImage(user!.fotoUrl!)
                             : null,
@@ -63,7 +63,7 @@ class PerfilPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.accent.withOpacity(0.15),
+                      color: AppColors.accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text('Administrador', style: TextStyle(color: AppColors.accent, fontWeight: FontWeight.w600)),
@@ -73,7 +73,7 @@ class PerfilPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: (user.isInadimplente ? AppColors.error : AppColors.statusAberta).withOpacity(0.15),
+                      color: (user.isInadimplente ? AppColors.error : AppColors.statusAberta).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -204,7 +204,7 @@ class _Section extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8, offset: const Offset(0, 2))],
       ),
       child: Column(
         children: items.asMap().entries.map((entry) {
@@ -390,9 +390,9 @@ class _MetricaCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

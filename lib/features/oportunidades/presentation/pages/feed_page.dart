@@ -224,7 +224,7 @@ class _FilterBar extends StatelessWidget {
                 label: Text(f.label),
                 selected: isActive,
                 onSelected: (_) => context.read<FeedBloc>().add(FeedFilterChanged(f.value)),
-                selectedColor: AppColors.primary.withOpacity(0.15),
+                selectedColor: AppColors.primary.withValues(alpha: 0.15),
                 checkmarkColor: AppColors.primary,
               );
             },
