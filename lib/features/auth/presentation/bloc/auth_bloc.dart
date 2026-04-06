@@ -6,6 +6,7 @@
 // O [AppRouter] escuta o stream deste bloc para redirecionar
 // entre `/login` e `/feed` automaticamente.
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/entities/user_entity.dart';
@@ -92,11 +93,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignIn(AuthSignInRequested event, Emitter<AuthState> emit) async {
+    debugPrint('[AuthBloc] ▶ SignIn iniciado — input: "${event.email}"');
     emit(const AuthLoading());
     final result = await _signIn(SignInParams(email: event.email, password: event.password));
     result.fold(
-      (f) => emit(AuthError(f.message)),
-      (user) => emit(AuthAuthenticated(user)),
+      (f) {
+        debugPrint('[AuthBloc] ✗ SignIn FALHOU — ${f.runtimeType}: ${f.message}');
+        emit(AuthError(f.message));
+      },
+      (user) {
+        debugPrint('[AuthBloc] ✓ SignIn OK — userId: ${user.id}, nome: ${user.nome}, admin: ${user.isAdmin}');
+        emit(AuthAuthenticated(user));
+      },
     );
   }
 

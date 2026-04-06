@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
@@ -11,21 +12,34 @@ class SupabaseAuthDatasource {
   SupabaseAuthDatasource(@Named('supabase') this._client);
 
   Future<UserModel> signIn({required String email, required String password}) async {
+    debugPrint('[AuthDS] ── signIn chamado com input: "$email"');
+
     // Se o input for um CPF (11 dígitos, com ou sem máscara), resolve o email real pelo CPF
     final resolvedEmail = await _resolveEmail(email);
+    debugPrint('[AuthDS] ── email resolvido: "$resolvedEmail"');
 
     try {
+      debugPrint('[AuthDS] ── chamando Supabase signInWithPassword...');
       final response = await _client.auth.signInWithPassword(
         email: resolvedEmail,
         password: password,
       );
+      debugPrint('[AuthDS] ── resposta recebida — user: ${response.user?.id}');
+
       final user = response.user;
       if (user == null) throw const AuthException('Falha ao autenticar');
+
+      debugPrint('[AuthDS] ── buscando dados do cooperado para userId: ${user.id}');
       final cooperado = await _fetchCooperado(user.id);
+      debugPrint('[AuthDS] ── cooperado encontrado: ${cooperado != null ? cooperado['nome'] : 'NÃO ENCONTRADO'}');
+
       return UserModel.fromSupabase(id: user.id, email: user.email ?? resolvedEmail, cooperadoData: cooperado);
-    } on AuthException {
+    } on AuthException catch (e) {
+      debugPrint('[AuthDS] ✗ AuthException: ${e.message} (statusCode: ${e.statusCode})');
       rethrow;
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[AuthDS] ✗ Erro inesperado: $e');
+      debugPrint('[AuthDS]   StackTrace: $st');
       throw AuthException(e.toString());
     }
   }
@@ -35,21 +49,26 @@ class SupabaseAuthDatasource {
   /// o próprio input (já é um email).
   Future<String> _resolveEmail(String input) async {
     final stripped = input.replaceAll(RegExp(r'\D'), '');
+    debugPrint('[AuthDS] ── _resolveEmail: input="$input" stripped="$stripped" isCpf=${stripped.length == 11}');
+
     if (stripped.length != 11) return input.trim();
 
     try {
+      debugPrint('[AuthDS] ── buscando cooperado pelo CPF: $stripped');
       final row = await _client
           .from('cooperados')
           .select('email')
           .eq('cpf', stripped)
           .maybeSingle();
+      debugPrint('[AuthDS] ── resultado da busca por CPF: $row');
       if (row != null && row['email'] != null) {
         return row['email'] as String;
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[AuthDS] ✗ Erro ao buscar CPF: $e');
+    }
 
-    // CPF não encontrado — retorna um email inválido propositalmente
-    // para que o Supabase retorne 400 (credenciais inválidas) ao invés de 500.
+    debugPrint('[AuthDS] ✗ CPF não encontrado na tabela cooperados');
     return '$stripped@cpf.nao.encontrado';
   }
 
