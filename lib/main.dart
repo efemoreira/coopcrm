@@ -6,6 +6,7 @@
 //  - Tratar deep links de notificação (app em background e app fechado).
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,7 +21,7 @@ final _localNotifications = FlutterLocalNotificationsPlugin();
 /// Precisa do pragma para não ser removido pelo tree-shaker.
 @pragma('vm:entry-point')
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  if (!kIsWeb) await Firebase.initializeApp();
 }
 
 /// Inicializa o plugin de notificações locais e cria o canal Android
@@ -112,23 +113,27 @@ void main() async {
     anonKey: Env.supabaseAnonKey,
   );
 
-  await Firebase.initializeApp();
-  await _setupLocalNotifications();
-  await _setupFCM();
+  if (!kIsWeb) {
+    await Firebase.initializeApp();
+    await _setupLocalNotifications();
+    await _setupFCM();
+  }
 
   configureDependencies();
 
-  // Deep link: app terminated → save pending route before runApp
-  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-  if (initialMessage != null) {
-    final oportunidadeId = initialMessage.data['oportunidade_id'] as String?;
-    if (oportunidadeId != null && oportunidadeId.isNotEmpty) {
-      getIt<AppRouter>().pendingDeepLink = '/feed/$oportunidadeId';
+  if (!kIsWeb) {
+    // Deep link: app terminated → save pending route before runApp
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      final oportunidadeId = initialMessage.data['oportunidade_id'] as String?;
+      if (oportunidadeId != null && oportunidadeId.isNotEmpty) {
+        getIt<AppRouter>().pendingDeepLink = '/feed/$oportunidadeId';
+      }
     }
-  }
 
-  // Deep link: app backgrounded → live listener
-  _setupDeepLinks();
+    // Deep link: app backgrounded → live listener
+    _setupDeepLinks();
+  }
 
   runApp(const App());
 }
