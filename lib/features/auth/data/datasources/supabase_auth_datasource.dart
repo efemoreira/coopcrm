@@ -11,17 +11,23 @@ class SupabaseAuthDatasource {
   SupabaseAuthDatasource(@Named('supabase') this._client);
 
   Future<UserModel> signIn({required String email, required String password}) async {
-    // Se o input for um CPF (11 dígitos), resolve o email real pelo CPF
+    // Se o input for um CPF (11 dígitos, com ou sem máscara), resolve o email real pelo CPF
     final resolvedEmail = await _resolveEmail(email);
 
-    final response = await _client.auth.signInWithPassword(
-      email: resolvedEmail,
-      password: password,
-    );
-    final user = response.user;
-    if (user == null) throw const AuthException('Falha ao autenticar');
-    final cooperado = await _fetchCooperado(user.id);
-    return UserModel.fromSupabase(id: user.id, email: user.email ?? resolvedEmail, cooperadoData: cooperado);
+    try {
+      final response = await _client.auth.signInWithPassword(
+        email: resolvedEmail,
+        password: password,
+      );
+      final user = response.user;
+      if (user == null) throw const AuthException('Falha ao autenticar');
+      final cooperado = await _fetchCooperado(user.id);
+      return UserModel.fromSupabase(id: user.id, email: user.email ?? resolvedEmail, cooperadoData: cooperado);
+    } on AuthException {
+      rethrow;
+    } catch (e) {
+      throw AuthException(e.toString());
+    }
   }
 
   /// Se o input parecer um CPF (11 dígitos numéricos), busca o email
