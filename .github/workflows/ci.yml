@@ -9,7 +9,7 @@ on:
 env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-  FLUTTER_VERSION: "3.27.3"
+  FLUTTER_VERSION: "stable"
 
 jobs:
   quality:
